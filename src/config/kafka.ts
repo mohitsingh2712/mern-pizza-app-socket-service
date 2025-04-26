@@ -40,7 +40,6 @@ export class KafkaBroker implements MessageBroker {
           case "billing":
             {
               const order = JSON.parse(message.value.toString());
-              console.log(order.data.tenantId);
               ws.io.to(String(order.data.tenantId)).emit("order-update", order);
             }
             break;
