@@ -10,7 +10,7 @@ const startServer = async () => {
   try {
     broker = createMessageBroker();
     await broker.connectConsumer();
-    await broker.consumeMessage(["order"], false);
+    await broker.consumeMessage(["billing"], false);
     ws.wsServer
       .listen(port, () => {
         logger.info(`WebSocket server is running on port ${port}`);

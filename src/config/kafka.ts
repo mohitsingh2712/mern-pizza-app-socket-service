@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Consumer, EachMessagePayload, Kafka } from "kafkajs";
 import { MessageBroker } from "../types/broker";
+import ws from "../socket";
 
 export class KafkaBroker implements MessageBroker {
   private consumer: Consumer;
@@ -34,11 +36,17 @@ export class KafkaBroker implements MessageBroker {
         message,
       }: EachMessagePayload) => {
         // Logic to handle incoming messages.
-        console.log({
-          value: message.value.toString(),
-          topic,
-          partition,
-        });
+        switch (topic) {
+          case "billing":
+            {
+              const order = JSON.parse(message.value.toString());
+              console.log(order.data.tenantId);
+              ws.io.to(String(order.data.tenantId)).emit("order-update", order);
+            }
+            break;
+          default:
+            break;
+        }
       },
     });
   }

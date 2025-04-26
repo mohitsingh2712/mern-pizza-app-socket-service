@@ -4,6 +4,7 @@ import config from "config";
 
 const wsServer = createServer();
 const frontendUrl = config.get("frontend.url");
+console.log(frontendUrl);
 const io = new Server(wsServer, {
   cors: {
     origin: frontendUrl as string,
