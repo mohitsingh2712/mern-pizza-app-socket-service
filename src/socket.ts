@@ -3,10 +3,14 @@ import { Server } from "socket.io";
 import config from "config";
 
 const wsServer = createServer();
-const frontendUrl = config.get("frontend.url");
+const allowedOrigins = [
+  config.get("frontend.client"),
+  config.get("frontend.admin"),
+];
+
 const io = new Server(wsServer, {
   cors: {
-    origin: frontendUrl as string,
+    origin: allowedOrigins as string[],
     methods: ["GET", "POST"],
   },
 });
